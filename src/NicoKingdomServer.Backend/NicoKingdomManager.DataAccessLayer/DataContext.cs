@@ -49,14 +49,13 @@ public class DataContext : DbContext, IDataContext
         foreach (string roleName in roles.Distinct())
         {
             Role role = Set<Role>().First(r => r.Name == roleName);
-            UserRole userRole = new()
+            Set<UserRole>().Add(new UserRole
             {
                 UserId = user.Id,
                 RoleId = role.Id,
                 User = user,
                 Role = role
-            };
-            Set<UserRole>().Add(userRole);
+            });
         }
     }
     public Task SaveAsync() => SaveChangesAsync();
