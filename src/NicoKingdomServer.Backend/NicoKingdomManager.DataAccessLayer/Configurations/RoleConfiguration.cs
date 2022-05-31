@@ -18,7 +18,7 @@ internal class RoleConfiguration : BaseEntityConfiguration<Role>
             .IsRequired();
 
         builder.Property(r => r.Color)
-            .HasMaxLength(50)
+            .HasMaxLength(10)
             .HasDefaultValue("Gray")
             .IsRequired();
     }
