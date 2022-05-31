@@ -5,11 +5,13 @@ VisualStudioVersion = 17.3.32519.111
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NicoKingdomManager", "NicoKingdomManager\NicoKingdomManager.csproj", "{A202A5EA-248B-411E-992B-75B97B25EAAB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NicoKingdomManager.BusinessLayer", "NicoKingdomManager.BusinessLayer\NicoKingdomManager.BusinessLayer.csproj", "{81CEE606-14D6-4C7A-975B-BC7183B88F04}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NicoKingdomManager.BusinessLayer", "NicoKingdomManager.BusinessLayer\NicoKingdomManager.BusinessLayer.csproj", "{81CEE606-14D6-4C7A-975B-BC7183B88F04}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NicoKingdomManager.DataAccessLayer", "NicoKingdomManager.DataAccessLayer\NicoKingdomManager.DataAccessLayer.csproj", "{F84B959F-4AF5-4BB5-B07C-4EFD2FB53248}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NicoKingdomManager.DataAccessLayer", "NicoKingdomManager.DataAccessLayer\NicoKingdomManager.DataAccessLayer.csproj", "{F84B959F-4AF5-4BB5-B07C-4EFD2FB53248}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NicoKingdomManager.Shared", "NicoKingdomManager.Shared\NicoKingdomManager.Shared.csproj", "{864191BD-E78E-4454-A53D-DD32EFB6CC76}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NicoKingdomManager.Shared", "NicoKingdomManager.Shared\NicoKingdomManager.Shared.csproj", "{864191BD-E78E-4454-A53D-DD32EFB6CC76}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "NicoKingdomManager.Database", "NicoKingdomManager.Database\NicoKingdomManager.Database.sqlproj", "{6B51320F-8EF8-4455-9247-238981061669}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,12 @@ Global
 		{864191BD-E78E-4454-A53D-DD32EFB6CC76}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{864191BD-E78E-4454-A53D-DD32EFB6CC76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{864191BD-E78E-4454-A53D-DD32EFB6CC76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B51320F-8EF8-4455-9247-238981061669}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B51320F-8EF8-4455-9247-238981061669}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B51320F-8EF8-4455-9247-238981061669}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{6B51320F-8EF8-4455-9247-238981061669}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B51320F-8EF8-4455-9247-238981061669}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B51320F-8EF8-4455-9247-238981061669}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
