@@ -27,11 +27,17 @@ public class UsersService : IUsersService
         dataContext.Delete(user.UserRoles);
         await dataContext.SaveAsync();
     }
-    public async Task<ListResult<User>> GetAsync(int pageIndex, int itemsPerPage)
+    public async Task<ListResult<User>> GetAsync(string nickName, int pageIndex, int itemsPerPage)
     {
-        var query = dataContext.GetData<Entities.User>().Include(u => u.UserRoles);
+        var query = dataContext.GetData<Entities.User>();
+        if (!string.IsNullOrWhiteSpace(nickName))
+        {
+            query = query.Where(u => u.NickName == nickName);
+        }
         int totalCount = await query.CountAsync();
-        var dbUsers = await query.Skip(pageIndex * itemsPerPage)
+
+        var dbUsers = await query.Include(u => u.UserRoles)
+            .Skip(pageIndex * itemsPerPage)
             .Take(itemsPerPage + 1)
             .ToListAsync();
         var users = mapper.Map<List<User>>(dbUsers);
@@ -41,13 +47,6 @@ public class UsersService : IUsersService
             return new ListResult<User>(users.Take(itemsPerPage), totalCount, totalCount > itemsPerPage);
         }
         return new ListResult<User>(users);
-    }
-    public async Task<User> GetAsync(string nickName)
-    {
-        var query = dataContext.GetData<Entities.User>().Include(u => u.UserRoles);
-        var dbUser = await query.FirstAsync();
-        var user = mapper.Map<User>(dbUser);
-        return user;
     }
     public async Task<User> SaveAsync(SaveUserRequest request)
     {

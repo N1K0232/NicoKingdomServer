@@ -7,6 +7,6 @@ namespace NicoKingdomManager.BusinessLayer.Services.Common;
 public interface IUsersService
 {
     Task DeleteAsync(Guid id);
-    Task<ListResult<User>> GetAsync(int pageIndex, int itemsPerPage);
+    Task<ListResult<User>> GetAsync(string nickName, int pageIndex, int itemsPerPage);
     Task<User> SaveAsync(SaveUserRequest request);
 }
