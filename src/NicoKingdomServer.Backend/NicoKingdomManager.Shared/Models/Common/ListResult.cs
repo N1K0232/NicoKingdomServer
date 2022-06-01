@@ -1,6 +1,6 @@
 ﻿namespace NicoKingdomManager.Shared.Models.Common;
 
-public sealed class ListResult<T>
+public sealed class ListResult<T> where T : BaseObject
 {
     public ListResult(IEnumerable<T> content)
     {
