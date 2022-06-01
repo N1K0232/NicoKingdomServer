@@ -40,19 +40,19 @@ public class DataContext : DbContext, IDataContext, IDisposable
     /// </summary>
     /// <typeparam name="T"><see cref="BaseEntity"/></typeparam>
     /// <param name="keyValues">The values of the primary key for the entity to be found</param>
-    /// <returns></returns>
+    /// <returns>a task representing the current operation</returns>
     public ValueTask<T> GetAsync<T>(params object[] keyValues) where T : BaseEntity
     {
         return Set<T>().FindAsync(keyValues);
     }
 
     /// <summary>
-    /// 
+    /// gets the <see cref="IQueryable{T}"/> object representing the entity of the database
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="ignoreQueryFilters"></param>
-    /// <param name="trackingChanges"></param>
-    /// <returns></returns>
+    /// <typeparam name="T"><see cref="BaseEntity"/></typeparam>
+    /// <param name="ignoreQueryFilters">true if the filters should be ignored otherwise false. default: false</param>
+    /// <param name="trackingChanges">true if the entity should be modified otherwise false. default: false</param>
+    /// <returns>the query with the link to the table</returns>
     public IQueryable<T> GetData<T>(bool ignoreQueryFilters = false, bool trackingChanges = false) where T : BaseEntity
     {
         var set = Set<T>().AsQueryable();
@@ -68,11 +68,14 @@ public class DataContext : DbContext, IDataContext, IDisposable
     }
 
     /// <summary>
-    /// 
+    /// inserts entity in the database
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <param name="entity"></param>
-    public void Insert<T>(T entity) where T : BaseEntity => InsertInternal(entity);
+    /// <typeparam name="T"><see cref="BaseEntity"/></typeparam>
+    /// <param name="entity">the entity that will be added in the database</param>
+    public void Insert<T>(T entity) where T : BaseEntity
+    {
+        InsertInternal(entity);
+    }
 
     /// <summary>
     /// inserts the user in the database and creates the many to many relationship
@@ -109,7 +112,7 @@ public class DataContext : DbContext, IDataContext, IDisposable
     /// <summary>
     /// saves the changes in the database
     /// </summary>
-    /// <returns>a task representing the current function</returns>
+    /// <returns>a task representing the current operation</returns>
     public Task SaveAsync() => SaveChangesAsync();
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
