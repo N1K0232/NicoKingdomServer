@@ -10,6 +10,6 @@ public interface IDataContext
     IQueryable<T> GetData<T>(bool ignoreQueryFilters = false, bool trackingChanges = false) where T : BaseEntity;
     ValueTask<T> GetAsync<T>(params object[] keyValues) where T : BaseEntity;
     void Insert<T>(T entity) where T : BaseEntity;
-    void Insert(User user, IEnumerable<string> roles);
+    void Insert(User user, params string[] roles);
     Task SaveAsync();
 }

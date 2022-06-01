@@ -44,7 +44,7 @@ public class DataContext : DbContext, IDataContext
         ArgumentNullException.ThrowIfNull(entity);
         Set<T>().Add(entity);
     }
-    public void Insert(User user, IEnumerable<string> roles)
+    public void Insert(User user, params string[] roles)
     {
         foreach (string roleName in roles.Distinct())
         {
