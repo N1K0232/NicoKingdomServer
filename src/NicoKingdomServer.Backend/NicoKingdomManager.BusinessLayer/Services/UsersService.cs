@@ -34,8 +34,8 @@ public class UsersService : IUsersService
         {
             query = query.Where(u => u.NickName == nickName);
         }
-        int totalCount = await query.CountAsync();
 
+        int totalCount = await query.CountAsync();
         var dbUsers = await query.Include(u => u.UserRoles)
             .Skip(pageIndex * itemsPerPage)
             .Take(itemsPerPage + 1)
