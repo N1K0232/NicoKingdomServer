@@ -14,12 +14,12 @@ public class DataContext : DbContext, IDataContext
 
     public void Delete<T>(T entity) where T : BaseEntity
     {
-        ArgumentNullException.ThrowIfNull(entity);
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
         Set<T>().Remove(entity);
     }
     public void Delete(IEnumerable<UserRole> entities)
     {
-        ArgumentNullException.ThrowIfNull(entities);
+        ArgumentNullException.ThrowIfNull(entities, nameof(entities));
         Set<UserRole>().RemoveRange(entities);
     }
     public ValueTask<T> GetAsync<T>(params object[] keyValues) where T : BaseEntity
@@ -39,13 +39,10 @@ public class DataContext : DbContext, IDataContext
             set.AsTracking() :
             set.AsNoTrackingWithIdentityResolution();
     }
-    public void Insert<T>(T entity) where T : BaseEntity
-    {
-        ArgumentNullException.ThrowIfNull(entity);
-        Set<T>().Add(entity);
-    }
+    public void Insert<T>(T entity) where T : BaseEntity => InsertInternal(entity);
     public void Insert(User user, string[] roles)
     {
+        InsertInternal(user);
         foreach (string roleName in roles.Distinct())
         {
             Role role = Set<Role>().First(r => r.Name == roleName);
@@ -58,6 +55,11 @@ public class DataContext : DbContext, IDataContext
             });
         }
     }
+    private void InsertInternal<T>(T entity) where T : BaseEntity
+    {
+        ArgumentNullException.ThrowIfNull(entity, nameof(entity));
+        Set<T>().Add(entity);
+    }
     public Task SaveAsync() => SaveChangesAsync();
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
@@ -69,6 +71,9 @@ public class DataContext : DbContext, IDataContext
             BaseEntity entity = (BaseEntity)entry.Entity;
             if (entry.State == EntityState.Added)
             {
+                //I don't need to set the id of the entity
+                //because the id is automatically calculated
+                //by the sql server environment
                 entity.CreatedDate = DateTime.UtcNow;
                 entity.LastModifiedDate = null;
             }
