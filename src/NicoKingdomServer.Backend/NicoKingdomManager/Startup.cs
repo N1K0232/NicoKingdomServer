@@ -47,6 +47,7 @@ public class Startup
 
         services.AddScoped<IUsersService, UsersService>();
         services.AddScoped<IRolesService, RolesService>();
+        services.AddScoped<IServerLogsService, ServerLogsService>();
     }
     public void Configure(IApplicationBuilder app)
     {
