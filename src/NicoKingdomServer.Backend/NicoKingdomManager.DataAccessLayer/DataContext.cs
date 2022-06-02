@@ -43,7 +43,7 @@ public class DataContext : DbContext, IDataContext, IDisposable
     /// <returns>the query with the link to the table</returns>
     public IQueryable<T> GetData<T>(bool ignoreQueryFilters = false, bool trackingChanges = false) where T : BaseEntity
     {
-        var set = Set<T>().AsQueryable();
+        var set = Set<T>().AsQueryable<T>();
 
         if (ignoreQueryFilters)
         {

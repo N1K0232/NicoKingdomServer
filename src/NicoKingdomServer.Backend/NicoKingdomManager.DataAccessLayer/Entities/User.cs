@@ -8,4 +8,5 @@ public class User : BaseEntity
     public string UserName { get; set; }
     public string NickName { get; set; }
     public Role Role { get; set; }
+    public List<ServerLog> ServerLogs { get; set; }
 }

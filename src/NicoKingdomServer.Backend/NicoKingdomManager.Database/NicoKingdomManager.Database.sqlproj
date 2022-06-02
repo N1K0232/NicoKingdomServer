@@ -64,6 +64,7 @@
   <ItemGroup>
     <Build Include="dbo\Tables\Roles.sql" />
     <Build Include="dbo\Tables\Users.sql" />
+    <Build Include="dbo\Tables\ServerLogs.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="NicoKingdomManager.Database.publish.xml" />
