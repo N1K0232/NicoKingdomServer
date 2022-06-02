@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NicoKingdomManager.DataAccessLayer\NicoKingdomManager.DataAccessLayer.csproj" />
-    <ProjectReference Include="..\NicoKingdomManager.Shared\NicoKingdomManager.Shared.csproj" />
   </ItemGroup>
 
 </Project>
