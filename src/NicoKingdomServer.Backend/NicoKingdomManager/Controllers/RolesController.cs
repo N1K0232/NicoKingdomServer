@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NicoKingdomManager.BusinessLayer.Services.Common;
-using NicoKingdomManager.Controllers.Common;
 using NicoKingdomManager.Shared.Models.Requests;
 
 namespace NicoKingdomManager.Controllers;
 
-public sealed class RolesController : ApiController
+public sealed class RolesController : ControllerBase
 {
     private readonly IRolesService rolesService;
 

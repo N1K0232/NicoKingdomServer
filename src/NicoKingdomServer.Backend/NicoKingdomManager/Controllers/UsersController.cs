@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NicoKingdomManager.BusinessLayer.Services.Common;
-using NicoKingdomManager.Controllers.Common;
 using NicoKingdomManager.Shared.Models.Requests;
 
 namespace NicoKingdomManager.Controllers;
@@ -8,7 +7,7 @@ namespace NicoKingdomManager.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 [Produces("application/json")]
-public sealed class UsersController : ApiController
+public sealed class UsersController : ControllerBase
 {
     private readonly IUsersService usersService;
 
