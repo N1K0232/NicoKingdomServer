@@ -1,6 +1,6 @@
-Emperor & Emperess -> owner
-King & Queen -> co-owner
-Prince & Princess -> administrator
+Emperor & Emperess -> owners
+King & Queen -> co-owners
+Prince & Princess -> administrators
 Head Knight -> head moderator
 Knights -> moderators
 Council -> the special role for all the roles above (this role has also a specified text and voice channel)
