@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Storage;
 using NicoKingdomManager.DataAccessLayer.Entities.Common;
+using System.Data;
 using System.Reflection;
 
 namespace NicoKingdomManager.DataAccessLayer;
@@ -71,6 +73,23 @@ public class DataContext : DbContext, IDataContext, IDisposable
     /// </summary>
     /// <returns>a task representing the current operation</returns>
     public Task SaveAsync() => SaveChangesAsync();
+
+    /// <summary>
+    /// commits the changes in a database
+    /// </summary>
+    /// <param name="action">the action to perform</param>
+    /// <returns></returns>
+    public Task ExecuteTransactionAsync(Func<Task> action)
+    {
+        IExecutionStrategy strategy = Database.CreateExecutionStrategy();
+        return strategy.ExecuteAsync(async () =>
+        {
+            using var transaction = await Database.BeginTransactionAsync().ConfigureAwait(false);
+            await action.Invoke().ConfigureAwait(false);
+            await transaction.CommitAsync().ConfigureAwait(false);
+        });
+    }
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         List<EntityEntry> entries = ChangeTracker.Entries()

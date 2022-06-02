@@ -41,4 +41,11 @@ public interface IDataContext
     /// </summary>
     /// <returns>a task representing the current operation</returns>
     Task SaveAsync();
+
+    /// <summary>
+    /// commits the changes in a database
+    /// </summary>
+    /// <param name="action">the action to perform</param>
+    /// <returns></returns>
+    Task ExecuteTransactionAsync(Func<Task> action);
 }
