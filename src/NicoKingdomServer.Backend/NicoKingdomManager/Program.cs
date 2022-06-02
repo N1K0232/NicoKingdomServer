@@ -57,6 +57,7 @@ public class Program
         services.AddScoped<IDataContext>(sp => sp.GetRequiredService<DataContext>());
 
         services.AddScoped<IUsersService, UsersService>();
+        services.AddScoped<IRolesService, RolesService>();
     }
     private static void Configure(IApplicationBuilder app)
     {

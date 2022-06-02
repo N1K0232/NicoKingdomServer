@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using NicoKingdomManager.BusinessLayer.Services.Common;
 using NicoKingdomManager.DataAccessLayer;
 using NicoKingdomManager.Shared.Models;
-using NicoKingdomManager.Shared.Models.Common;
 using NicoKingdomManager.Shared.Models.Requests;
 using Entities = NicoKingdomManager.DataAccessLayer.Entities;
 
@@ -24,10 +23,9 @@ public class UsersService : IUsersService
     {
         var user = await dataContext.GetAsync<Entities.User>(id);
         dataContext.Delete(user);
-        dataContext.Delete(user.UserRoles);
         await dataContext.SaveAsync();
     }
-    public async Task<ListResult<User>> GetAsync(string nickName, int pageIndex, int itemsPerPage)
+    public async Task<IEnumerable<User>> GetAsync(string nickName)
     {
         var query = dataContext.GetData<Entities.User>();
         if (!string.IsNullOrWhiteSpace(nickName))
@@ -35,34 +33,31 @@ public class UsersService : IUsersService
             query = query.Where(u => u.NickName == nickName);
         }
 
-        int totalCount = await query.CountAsync();
-        var dbUsers = await query.Include(u => u.UserRoles)
-            .Skip(pageIndex * itemsPerPage)
-            .Take(itemsPerPage + 1)
-            .ToListAsync();
+        var dbUsers = await query.ToListAsync();
         var users = mapper.Map<List<User>>(dbUsers);
-
-        if (totalCount > 1)
-        {
-            return new ListResult<User>(users.Take(itemsPerPage), totalCount, totalCount > itemsPerPage);
-        }
-        return new ListResult<User>(users);
+        return users;
     }
     public async Task<User> SaveAsync(SaveUserRequest request)
     {
-        var query = dataContext.GetData<Entities.User>(trackingChanges: true);
+        var userQuery = dataContext.GetData<Entities.User>(trackingChanges: true);
+        var roleQuery = dataContext.GetData<Entities.Role>();
         var dbUser = request.Id != null ?
-            await query.FirstOrDefaultAsync(u => u.Id == request.Id) : null;
+            await userQuery.FirstOrDefaultAsync(user => user.Id == request.Id) : null;
+        var dbRole = await roleQuery.FirstOrDefaultAsync(role => role.Name == request.Role);
 
         if (dbUser == null)
         {
             dbUser = mapper.Map<Entities.User>(request);
             dbUser.NickName = request.NickName ?? request.UserName;
-            dataContext.Insert(dbUser, request.Roles);
+            dbUser.RoleId = dbRole.Id;
+            dbUser.Role = dbRole;
+            dataContext.Insert(dbUser);
         }
         else
         {
             mapper.Map(request, dbUser);
+            dbUser.RoleId = dbRole.Id;
+            dbUser.Role = dbRole;
         }
 
         await dataContext.SaveAsync();

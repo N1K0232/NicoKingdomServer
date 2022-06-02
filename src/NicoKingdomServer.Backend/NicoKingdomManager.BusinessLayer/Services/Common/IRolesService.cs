@@ -3,9 +3,9 @@ using NicoKingdomManager.Shared.Models.Requests;
 
 namespace NicoKingdomManager.BusinessLayer.Services.Common;
 
-public interface IUsersService
+public interface IRolesService
 {
     Task DeleteAsync(Guid id);
-    Task<IEnumerable<User>> GetAsync(string nickName);
-    Task<User> SaveAsync(SaveUserRequest request);
+    Task<IEnumerable<Role>> GetAsync(string name);
+    Task<Role> SaveAsync(SaveRoleRequest request);
 }

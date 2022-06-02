@@ -13,12 +13,17 @@ internal class UserConfiguration : BaseEntityConfiguration<User>
 
         builder.ToTable("Users");
 
-        builder.Property(u => u.UserName)
+        builder.Property(user => user.UserName)
             .HasMaxLength(100)
             .IsRequired();
 
-        builder.Property(u => u.NickName)
+        builder.Property(user => user.NickName)
             .HasMaxLength(100)
+            .IsRequired();
+
+        builder.HasOne(user => user.Role)
+            .WithMany(role => role.Users)
+            .HasForeignKey(user => user.RoleId)
             .IsRequired();
     }
 }

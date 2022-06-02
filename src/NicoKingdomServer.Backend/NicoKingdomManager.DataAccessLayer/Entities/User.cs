@@ -4,7 +4,8 @@ namespace NicoKingdomManager.DataAccessLayer.Entities;
 
 public class User : BaseEntity
 {
+    public Guid RoleId { get; set; }
     public string UserName { get; set; }
     public string NickName { get; set; }
-    public List<UserRole> UserRoles { get; set; }
+    public Role Role { get; set; }
 }

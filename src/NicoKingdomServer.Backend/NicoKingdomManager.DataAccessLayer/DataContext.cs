@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using NicoKingdomManager.DataAccessLayer.Entities;
 using NicoKingdomManager.DataAccessLayer.Entities.Common;
 using System.Reflection;
 
@@ -22,17 +21,6 @@ public class DataContext : DbContext, IDataContext, IDisposable
     {
         ArgumentNullException.ThrowIfNull(entity, nameof(entity));
         Set<T>().Remove(entity);
-    }
-
-    /// <summary>
-    /// removes a collection of <see cref="UserRole"/> from the UserRoles table
-    /// </summary>
-    /// <param name="entities">the list of <see cref="UserRole"/></param>
-    /// <exception cref="ArgumentNullException"></exception>
-    public void Delete(IEnumerable<UserRole> entities)
-    {
-        ArgumentNullException.ThrowIfNull(entities, nameof(entities));
-        Set<UserRole>().RemoveRange(entities);
     }
 
     /// <summary>
@@ -74,37 +62,6 @@ public class DataContext : DbContext, IDataContext, IDisposable
     /// <param name="entity">the entity that will be added in the database</param>
     public void Insert<T>(T entity) where T : BaseEntity
     {
-        InsertInternal(entity);
-    }
-
-    /// <summary>
-    /// inserts the user in the database and creates the many to many relationship
-    /// </summary>
-    /// <param name="user">the user that will be added in the database</param>
-    /// <param name="roles">the roles of the user</param>
-    public void Insert(User user, string[] roles)
-    {
-        InsertInternal(user);
-        foreach (string roleName in roles.Distinct())
-        {
-            Role role = Set<Role>().First(r => r.Name == roleName);
-            Set<UserRole>().Add(new UserRole
-            {
-                UserId = user.Id,
-                RoleId = role.Id,
-                User = user,
-                Role = role
-            });
-        }
-    }
-
-    /// <summary>
-    /// the logic for adding the entity in the database
-    /// </summary>
-    /// <typeparam name="T"><see cref="BaseEntity"/></typeparam>
-    /// <param name="entity">the entity that will be added in the database</param>
-    private void InsertInternal<T>(T entity) where T : BaseEntity
-    {
         ArgumentNullException.ThrowIfNull(entity, nameof(entity));
         Set<T>().Add(entity);
     }
@@ -141,24 +98,6 @@ public class DataContext : DbContext, IDataContext, IDisposable
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
-        modelBuilder.Entity<UserRole>(builder =>
-        {
-            builder.ToTable("UserRoles");
-
-            builder.HasKey(userRole => new { userRole.UserId, userRole.RoleId });
-
-            builder.HasOne(userRole => userRole.User)
-                    .WithMany(user => user.UserRoles)
-                    .HasForeignKey(userRole => userRole.UserId)
-                    .IsRequired();
-
-            builder.HasOne(userRole => userRole.Role)
-                    .WithMany(role => role.UserRoles)
-                    .HasForeignKey(userRole => userRole.RoleId)
-                    .IsRequired();
-        });
-
         base.OnModelCreating(modelBuilder);
     }
 }
