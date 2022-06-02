@@ -34,7 +34,15 @@ public class UsersService : IUsersService
         }
 
         var dbUsers = await query.ToListAsync();
-        var users = mapper.Map<List<User>>(dbUsers);
+        List<User> users = new();
+
+        foreach (var dbUser in dbUsers)
+        {
+            User user = mapper.Map<User>(dbUser);
+            user.Role = mapper.Map<Role>(dbUser.Role);
+            users.Add(user);
+        }
+
         return users;
     }
     public async Task<User> SaveAsync(SaveUserRequest request)
@@ -43,14 +51,13 @@ public class UsersService : IUsersService
         var roleQuery = dataContext.GetData<Entities.Role>();
         var dbUser = request.Id != null ?
             await userQuery.FirstOrDefaultAsync(user => user.Id == request.Id) : null;
-        var dbRole = await roleQuery.FirstOrDefaultAsync(role => role.Name == request.Role);
+        var dbRole = await roleQuery.FirstOrDefaultAsync(role => role.Name == request.RoleName);
 
         if (dbUser == null)
         {
             dbUser = mapper.Map<Entities.User>(request);
             dbUser.NickName = request.NickName ?? request.UserName;
             dbUser.RoleId = dbRole.Id;
-            dbUser.Role = dbRole;
             dataContext.Insert(dbUser);
         }
         else
@@ -61,6 +68,10 @@ public class UsersService : IUsersService
         }
 
         await dataContext.SaveAsync();
-        return mapper.Map<User>(dbUser);
+
+        User savedUser = mapper.Map<User>(dbUser);
+        Role role = mapper.Map<Role>(dbRole);
+        savedUser.Role = role;
+        return savedUser;
     }
 }

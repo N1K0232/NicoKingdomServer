@@ -74,7 +74,7 @@ public class DataContext : DbContext, IDataContext, IDisposable
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         List<EntityEntry> entries = ChangeTracker.Entries()
-            .Where(e => e.GetType().IsSubclassOf(typeof(BaseEntity))).ToList();
+            .Where(e => e.Entity.GetType().IsSubclassOf(typeof(BaseEntity))).ToList();
 
         foreach (EntityEntry entry in entries.Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
         {

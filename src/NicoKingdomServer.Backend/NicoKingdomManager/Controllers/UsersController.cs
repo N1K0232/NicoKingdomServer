@@ -28,9 +28,9 @@ public sealed class UsersController : ControllerBase
     [HttpGet("Get")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get(string nickName = null, int pageIndex = 0, int itemsPerPage = 10)
+    public async Task<IActionResult> Get(string nickName = null)
     {
-        var users = await usersService.GetAsync(nickName, pageIndex, itemsPerPage);
+        var users = await usersService.GetAsync(nickName);
         return users != null ? Ok(users) : NotFound("no user found");
     }
 

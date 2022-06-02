@@ -28,9 +28,9 @@ public sealed class RolesController : ControllerBase
     [HttpGet("Get")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Get(string name, int pageIndex = 0, int itemsPerPage = 10)
+    public async Task<IActionResult> Get(string name)
     {
-        var roles = await rolesService.GetAsync(name, pageIndex, itemsPerPage);
+        var roles = await rolesService.GetAsync(name);
         return roles != null ? Ok(roles) : NotFound("no role found");
     }
 
