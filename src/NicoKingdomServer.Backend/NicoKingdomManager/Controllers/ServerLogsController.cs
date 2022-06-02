@@ -4,6 +4,9 @@ using NicoKingdomManager.Shared.Models.Requests;
 
 namespace NicoKingdomManager.Controllers;
 
+[ApiController]
+[Route("api/[controller]")]
+[Produces("application/json")]
 public sealed class ServerLogsController : ControllerBase
 {
     private readonly IServerLogsService serverLogsService;
