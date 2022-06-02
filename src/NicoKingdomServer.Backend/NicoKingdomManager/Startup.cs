@@ -23,11 +23,12 @@ public class Startup
 
         services.AddProblemDetails();
         services.AddControllers()
-        .AddJsonOptions(options =>
-        {
-            options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
-            options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
-        });
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
+                options.JsonSerializerOptions.Converters.Add(new UtcDateTimeConverter());
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
         services.AddEndpointsApiExplorer();
         services.AddAutoMapper(typeof(UserMapperProfile).Assembly);
         services.AddFluentValidation(options =>
@@ -35,10 +36,10 @@ public class Startup
             options.RegisterValidatorsFromAssemblyContaining<SaveUserValidator>();
         });
         services.AddSwaggerGen()
-        .AddFluentValidationRulesToSwagger(options =>
-        {
-            options.SetNotNullableIfMinLengthGreaterThenZero = true;
-        });
+            .AddFluentValidationRulesToSwagger(options =>
+            {
+                options.SetNotNullableIfMinLengthGreaterThenZero = true;
+            });
 
         string connectionString = configuration.GetConnectionString("SqlConnection");
         services.AddSqlServer<DataContext>(connectionString);
