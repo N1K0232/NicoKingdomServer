@@ -6,6 +6,7 @@ using NicoKingdomManager.BusinessLayer.Services;
 using NicoKingdomManager.BusinessLayer.Services.Common;
 using NicoKingdomManager.BusinessLayer.Validators;
 using NicoKingdomManager.DataAccessLayer;
+using NicoKingdomManager.Settings;
 using Serilog;
 using System.Text.Json.Serialization;
 using TinyHelpers.Json.Serialization;
@@ -41,8 +42,9 @@ public class Startup
                 options.SetNotNullableIfMinLengthGreaterThenZero = true;
             });
 
-        string connectionString = configuration.GetConnectionString("SqlConnection");
-        services.AddSqlServer<DataContext>(connectionString);
+        ConnectionStrings connectionStrings = new(configuration);
+
+        services.AddSqlServer<DataContext>(connectionStrings.SqlConnection);
         services.AddScoped<IDataContext>(sp => sp.GetRequiredService<DataContext>());
 
         services.AddScoped<IUsersService, UsersService>();
